@@ -37,3 +37,17 @@ func MergeSortedSlice(s1, s2 []int64) []int64 {
 	}
 	return newS
 }
+
+func FilterSlice(s []int64, filter func(x int64) bool) []int64 {
+	// 返回的新切片
+	// s[:0] 这种写法是创建了一个 len 为 0，cap 为 len(s) 即和原始切片最大容量一致的切片
+	// 因为是过滤，所以新切片的元素总个数一定不大于比原始切片，这样做减少了切片扩容带来的影响
+	newS := s[:0]
+	// 遍历，对每个元素执行 filter，符合条件的加入新切片中
+	for _, x := range s {
+		if !filter(x) {
+			newS = append(newS, x)
+		}
+	}
+	return newS
+}
